@@ -1,0 +1,1 @@
+# django-class-base-view-course
