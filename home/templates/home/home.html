@@ -6,9 +6,8 @@
         <h1 class=""> home page {{username}} </h1>
         {% for car in cars %}
             <p> 
-                {{car.name}} 
-                <a href="{% url 'home:car_delete' car.id %}"> Delete </a>
-                <a href="{% url 'home:car_update' car.id %}"> Update </a> 
+                {{car.name}} {{car.created}}
+
             
             </p>
                 

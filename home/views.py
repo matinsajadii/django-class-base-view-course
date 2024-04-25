@@ -1,13 +1,15 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.http import HttpResponse
-from django.views.generic import TemplateView, RedirectView, ListView, FormView, DetailView, UpdateView
+from django.views.generic import TemplateView, RedirectView, ListView, FormView, DetailView, UpdateView, MonthArchiveView
 from .models import Car
 from django.views.generic.detail import DetailView
 from .forms import CarCreateForm
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from .serializers import CarSerializer
 
 # class HomeView(TemplateView):
 #     # http_method_names = ["post", "options"]
@@ -86,18 +88,41 @@ class HomeView(ListView):
 #         )
 
 
-class CarDelete(DetailView):
-    model = Car
-    success_url = reverse_lazy("home:home")
-    template_name = "home/delete.html"
+# class CarDelete(DetailView):
+#     model = Car
+#     success_url = reverse_lazy("home:home")
+#     template_name = "home/delete.html"
 
-class CarUpdate(UpdateView):
-    model = Car
-    fields = ["name", "year"]
-    success_url = reverse_lazy("home:home")
-    template_name = "home/update.html"
+# class CarUpdate(UpdateView):
+#     model = Car
+#     fields = ["name", "year"]
+#     success_url = reverse_lazy("home:home")
+#     template_name = "home/update.html"
 
 
-class UserLogin(auth_views.LoginView):
-    template_name = "home/login.html"
-    next_page = reverse_lazy("home:home")
+# class UserLogin(auth_views.LoginView):
+#     template_name = "home/login.html"
+#     next_page = reverse_lazy("home:home")
+
+
+# class UserLogout(auth_views.LogoutView):
+#     next_page = reverse_lazy("home:home")
+
+
+# class MonthCar(MonthArchiveView):
+#     template_name = "home/home.html"
+#     model = Car
+#     date_field = "created"
+#     allow_future = True
+#     context_object_name = "cars"
+#     month_format = "%m"
+
+
+class CarListView(ListAPIView):
+    serializer_class = CarSerializer
+    queryset = Car.objects.all()
+
+
+class SingleCar(RetrieveAPIView):
+    serializer_class = CarSerializer
+    queryset = Car.objects.all()
